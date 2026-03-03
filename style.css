@@ -671,8 +671,20 @@ select {
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 860px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
   .chord-layout {
     grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .chord-layout>* {
+    min-width: 0;
   }
 
   .chord-sidebar {
@@ -687,9 +699,33 @@ select {
     padding: 8px 10px;
   }
 
-  .root-grid,
+  .root-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    width: 100%;
+  }
+
+  .root-btn {
+    width: 100%;
+    height: 30px;
+    font-size: 0.72rem;
+    padding: 0;
+  }
+
+  .pos-show-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .pos-show-row>div {
+    flex: 1;
+  }
+
   .btn-group {
     justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .cq-body {
@@ -735,9 +771,23 @@ select {
   }
 
   .chord-list {
-    grid-template-columns: 1fr 1fr 1fr;
-    max-height: 180px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    max-height: 160px;
     overflow-y: auto;
+  }
+
+  .chord-item {
+    padding: 6px 4px;
+  }
+
+  .chord-symbol {
+    font-size: 0.95rem;
+  }
+
+  .chord-name {
+    font-size: 0.65rem;
+    word-break: break-all;
   }
 
   .sq-controls,
