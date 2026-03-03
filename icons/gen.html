@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <canvas id="c192" width="192" height="192"></canvas>
+    <canvas id="c512" width="512" height="512"></canvas>
+    <script>
+        function draw(canvas) {
+            const s = canvas.width;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#F5EDE0";
+            ctx.beginPath(); ctx.roundRect(0, 0, s, s, s * 0.18); ctx.fill();
+            ctx.font = `${s * 0.45}px serif`;
+            ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            ctx.fillText("🎸", s / 2, s * 0.42);
+            ctx.fillStyle = "#8B4513";
+            ctx.font = `800 ${s * 0.13}px sans-serif`;
+            ctx.fillText("Guitar", s / 2, s * 0.78);
+        }
+        draw(document.getElementById("c192"));
+        draw(document.getElementById("c512"));
+        document.getElementById("c192").toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "icon-192.png"; a.click() });
+        document.getElementById("c512").toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "icon-512.png"; a.click() });
+    </script>
+</body>
+
+</html>
