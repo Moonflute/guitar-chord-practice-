@@ -383,7 +383,7 @@ function renderEmptyQuizFretboard(container, correctDots, startFret, endFret, on
 }
 
 // ── Mobile: rotate fretboard 90° CW so it fills portrait screens ───────
-const MOBILE_BP = 600;
+const MOBILE_BP = 860;
 function applyMobileRotation(container) {
     const svg = container.querySelector('.h-fretboard');
     if (!svg) return;
@@ -394,11 +394,13 @@ function applyMobileRotation(container) {
     container.style.position = '';
     container.style.overflow = '';
     if (window.innerWidth > MOBILE_BP) return;
-    const w = parseFloat(svg.getAttribute('width'));
-    const h = parseFloat(svg.getAttribute('height'));
+    const w = parseFloat(svg.getAttribute('width'));   // original width (long side ~754)
+    const h = parseFloat(svg.getAttribute('height'));  // original height (short side ~276)
     if (!w || !h) return;
-    const cw = container.clientWidth - 16; // account for padding
-    const scale = cw / h;
+    const cw = container.clientWidth;
+    // After 90° CW rotation: visual width = h, visual height = w
+    // Scale so visual width (h*scale) fits container width
+    const scale = Math.min(cw / h, 1);
     svg.style.transformOrigin = '0 0';
     svg.style.transform = `translateX(${h * scale}px) scale(${scale}) rotate(90deg)`;
     container.style.position = 'relative';

@@ -1,4 +1,4 @@
-const CACHE_NAME = "guitar-v3";
+const CACHE_NAME = "guitar-v8";
 const ASSETS = [
     "./", "./index.html", "./style.css",
     "./app.js", "./fretboard.js", "./utils.js", "./sound.js",

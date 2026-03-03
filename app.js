@@ -33,94 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setupChordQuiz();
     setupScaleQuiz();
     setupNoteQuiz();
-    setupMobileDrawer();
     switchTab("chord");
 });
-
-// ─── Mobile Drawer ───────────────────────────────────────────────────────────
-function setupMobileDrawer() {
-    const btn = document.getElementById("mobile-menu-btn");
-    const overlay = document.getElementById("drawer-overlay");
-    const drawer = document.getElementById("mobile-drawer");
-    const closeBtn = document.getElementById("drawer-close");
-    const body = document.getElementById("drawer-body");
-    if (!btn) return;
-
-    function openDrawer() {
-        // Populate drawer with current tab's controls
-        body.innerHTML = "";
-        const tab = state.activeTab;
-        let source = null;
-        if (tab === "chord") source = document.querySelector(".chord-sidebar");
-        else if (tab === "scale") source = document.querySelector("#panel-scale .scale-controls");
-        else if (tab === "scalequiz") source = document.querySelector("#panel-scalequiz .sq-controls");
-        else if (tab === "chordquiz") source = document.querySelector("#panel-chordquiz .quiz-header");
-        else if (tab === "notequiz") source = document.querySelector("#panel-notequiz .quiz-header");
-
-        if (source) {
-            const clone = source.cloneNode(true);
-            clone.style.display = "";  // ensure visible
-            // Re-wire interactive elements in clone
-            body.appendChild(clone);
-            wireDrawerClone(clone, tab);
-        }
-        drawer.classList.add("open");
-        overlay.classList.add("open");
-    }
-
-    function closeDrawer() {
-        drawer.classList.remove("open");
-        overlay.classList.remove("open");
-    }
-
-    btn.addEventListener("click", openDrawer);
-    closeBtn.addEventListener("click", closeDrawer);
-    overlay.addEventListener("click", closeDrawer);
-}
-
-function wireDrawerClone(clone, tab) {
-    const closeDrawer = () => {
-        document.getElementById("mobile-drawer").classList.remove("open");
-        document.getElementById("drawer-overlay").classList.remove("open");
-    };
-
-    if (tab === "chord") {
-        // Root buttons
-        clone.querySelectorAll(".root-btn").forEach(b => {
-            b.addEventListener("click", () => {
-                state.rootNote = b.dataset.note;
-                state.selectedChordIdx = 0;
-                renderChordMode();
-                closeDrawer();
-            });
-        });
-        // Chord items
-        clone.querySelectorAll(".chord-item").forEach(b => {
-            b.addEventListener("click", () => {
-                state.selectedChordIdx = Number(b.dataset.idx);
-                renderChordMode();
-                closeDrawer();
-            });
-        });
-    } else if (tab === "scale") {
-        clone.querySelectorAll(".pill-btn[data-range]").forEach(b => {
-            b.addEventListener("click", () => {
-                state.scaleRange = Number(b.dataset.range);
-                document.querySelectorAll("#panel-scale .pill-btn[data-range]").forEach(x => x.classList.toggle("active", Number(x.dataset.range) === state.scaleRange));
-                renderScaleMode();
-                closeDrawer();
-            });
-        });
-    } else if (tab === "scalequiz") {
-        clone.querySelectorAll(".sq-range-btn").forEach(b => {
-            b.addEventListener("click", () => {
-                state.sqRangeIdx = Number(b.dataset.range);
-                document.querySelectorAll(".sq-range-btn").forEach(x => x.classList.toggle("active", Number(x.dataset.range) === state.sqRangeIdx));
-                closeDrawer();
-            });
-        });
-    }
-}
 
 // ─── Tabs ────────────────────────────────────────────────────────────────────
 function setupTabs() {
@@ -169,7 +83,12 @@ function renderChordList() {
         const btn = document.createElement("button");
         btn.className = "chord-item" + (idx === state.selectedChordIdx ? " active" : "");
         btn.innerHTML = `<span class="chord-symbol">${chord.symbol}</span><span class="chord-name">${chord.name}</span>`;
-        btn.addEventListener("click", () => { state.selectedChordIdx = idx; document.querySelectorAll(".chord-item").forEach(b => b.classList.remove("active")); btn.classList.add("active"); renderChordMode(); });
+        btn.addEventListener("click", () => {
+            state.selectedChordIdx = idx;
+            document.querySelectorAll(".chord-item").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderChordMode();
+        });
         list.appendChild(btn);
     });
 }
