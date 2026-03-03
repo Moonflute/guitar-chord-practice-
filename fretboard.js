@@ -168,6 +168,7 @@ function renderHorizontalFretboard(container, {
     }
 
     container.appendChild(svg);
+    applyMobileRotation(container);
 }
 
 // ── Chord rendering (full 12-fret) ────────────────────────────────────────
@@ -278,6 +279,7 @@ function renderScaleNotes(container, hlStart, hlEnd, showMode, onNoteClick) {
 
     container.innerHTML = "";
     container.appendChild(svg);
+    applyMobileRotation(container);
 }
 
 // ── Note quiz single-dot view ──────────────────────────────────────────────
@@ -377,4 +379,34 @@ function renderEmptyQuizFretboard(container, correctDots, startFret, endFret, on
     }
     container.innerHTML = "";
     container.appendChild(svg);
+    applyMobileRotation(container);
 }
+
+// ── Mobile: rotate fretboard 90° CW so it fills portrait screens ───────
+const MOBILE_BP = 600;
+function applyMobileRotation(container) {
+    const svg = container.querySelector('.h-fretboard');
+    if (!svg) return;
+    // Reset any previous mobile transform
+    svg.style.transform = '';
+    svg.style.transformOrigin = '';
+    container.style.height = '';
+    container.style.position = '';
+    container.style.overflow = '';
+    if (window.innerWidth > MOBILE_BP) return;
+    const w = parseFloat(svg.getAttribute('width'));
+    const h = parseFloat(svg.getAttribute('height'));
+    if (!w || !h) return;
+    const cw = container.clientWidth - 16; // account for padding
+    const scale = cw / h;
+    svg.style.transformOrigin = '0 0';
+    svg.style.transform = `translateX(${h * scale}px) scale(${scale}) rotate(90deg)`;
+    container.style.position = 'relative';
+    container.style.height = (w * scale) + 'px';
+    container.style.overflow = 'hidden';
+}
+
+// Re-apply on resize
+window.addEventListener('resize', () => {
+    document.querySelectorAll('.diagram-wrap, .fretboard-wrap').forEach(c => applyMobileRotation(c));
+});
