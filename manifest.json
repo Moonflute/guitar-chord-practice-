@@ -1,0 +1,28 @@
+{
+    "name": "Guitar",
+    "short_name": "Guitar",
+    "description": "기타 코드·스케일 시각화 및 퀴즈 트레이너",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#F5EDE0",
+    "theme_color": "#8B4513",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
